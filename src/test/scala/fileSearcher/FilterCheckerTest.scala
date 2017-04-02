@@ -24,4 +24,16 @@ class FilterCheckerTest extends FlatSpec {
     val matchedFiles = FilterChecker("match") findMatchedFiles listOfObjects
     assert(matchedFiles.length ==  0)
   }
+
+  "FilterChecker  passed a file with content that matches that filter" should
+  "return the match succeeded" in {
+    val isContentMatched = FilterChecker("mihai").matchesFileContent(new File("./testfiles/mihai.data"))
+    assert(isContentMatched == true)
+  }
+
+  "FilterChecker passed a file with content that does not  match the filter" should
+  "return that the match failed" in {
+    val isContentMatched = FilterChecker("mihai").matchesFileContent(new File("./testfiles/readme.txt"))
+    assert(isContentMatched ==  false)
+  }
 }

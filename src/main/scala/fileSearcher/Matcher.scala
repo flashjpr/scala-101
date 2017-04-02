@@ -8,7 +8,7 @@ import scala.annotation.tailrec
   * Created by flash on 23/03/2017.
   */
 class Matcher (filter:String, val rootLocation:String = new File (".").getCanonicalPath,
-              checkSubFolders: Boolean = false) {
+              checkSubFolders: Boolean = false, contentFilter: Option[String] = None) {
 
   val rootIOObject = FileConverter.convertToIOObject(new File(rootLocation))
 
@@ -36,6 +36,12 @@ class Matcher (filter:String, val rootLocation:String = new File (".").getCanoni
       case _ => List()
     }
 
-    matchedFiles map(iOObject => iOObject.name)
+    val contentFilterFiles = contentFilter match {
+      case Some(dataFilter) => matchedFiles filter(iOObject =>
+        FilterChecker(dataFilter).matchesFileContent(iOObject.file))
+      case None => matchedFiles
+    }
+
+    contentFilterFiles map(iOObject => iOObject.name)
   }
 }
