@@ -36,12 +36,12 @@ class Matcher (filter:String, val rootLocation:String = new File (".").getCanoni
       case _ => List()
     }
 
-    val contentFilterFiles = contentFilter match {
+    val contentFilteredFiles = contentFilter match {
       case Some(dataFilter) => matchedFiles filter(iOObject =>
-        FilterChecker(dataFilter).matchesFileContent(iOObject.file))
+        FilterChecker(dataFilter).findMatchedContentCount(iOObject.file) > 0)
       case None => matchedFiles
     }
 
-    contentFilterFiles map(iOObject => iOObject.name)
+    contentFilteredFiles map(iOObject => iOObject.name)
   }
 }
